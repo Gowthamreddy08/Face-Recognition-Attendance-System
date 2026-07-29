@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Register Student</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="container">
+
+    <h1>Register Student</h1>
+
+    <form method="POST" enctype="multipart/form-data">
+
+        <input type="text" name="name" placeholder="Name" required>
+
+        <input type="text" name="roll_no" placeholder="Roll Number" required>
+
+        <input
+    type="email"
+    name="email"
+    placeholder="Email Address"
+    required
+>
+
+        <input type="text" name="branch" placeholder="Branch" required>
+
+        <input type="text" name="year" placeholder="Year" required>
+
+        <input type="file" name="image" required>
+
+        <button type="submit">Save Student</button>
+
+    </form>
+
+    <br>
+
+    <a href="{{ url_for('dashboard') }}">
+        <button type="button">Back</button>
+    </a>
+
+    <div class="footer">
+        Created by Gowtham Reddy
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Attendance Result</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="container">
+    <h2>Attendance Result</h2>
+
+    {% if result == "Not Recognized" %}
+        <h3 style="color:red;">Face Not Recognized</h3>
+    {% else %}
+        <h3 style="color:green;">Present - Roll No: {{ result }}</h3>
+    {% endif %}
+
+    <br>
+    <a href="/dashboard">Back to Dashboard</a>
+</div>
+</body>
+</html>

@@ -1,0 +1,255 @@
+/* ================= GLOBAL ================= */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    overflow:auto;
+    background:linear-gradient(-45deg,#667eea,#764ba2,#6a11cb,#2575fc);
+    background-size:400% 400%;
+    animation:gradientMove 12s ease infinite;
+    padding:40px 20px;
+}
+
+/* Animated Background */
+
+@keyframes gradientMove{
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
+}
+
+body::before,
+body::after{
+    content:"";
+    position:fixed;
+    border-radius:50%;
+    background:rgba(255,255,255,.08);
+    z-index:-1;
+}
+
+body::before{
+    width:220px;
+    height:220px;
+    top:12%;
+    left:15%;
+}
+
+body::after{
+    width:320px;
+    height:320px;
+    bottom:10%;
+    right:10%;
+}
+
+/* ================= CONTAINER ================= */
+
+.container{
+    width:95%;
+    max-width:1100px;
+    background:rgba(255,255,255,.15);
+    backdrop-filter:blur(15px);
+    border-radius:20px;
+    padding:35px;
+    color:white;
+    box-shadow:0 15px 35px rgba(0,0,0,.35);
+    text-align:center;
+}
+
+/* ================= HEADINGS ================= */
+
+h1{
+    margin-bottom:25px;
+    font-size:44px;
+    font-weight:700;
+}
+
+h2{
+    margin-bottom:20px;
+    font-weight:500;
+}
+
+/* ================= INPUTS ================= */
+
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="file"],
+select{
+    width:100%;
+    padding:14px;
+    margin:12px 0;
+    border:none;
+    border-radius:10px;
+    font-size:16px;
+}
+
+/* ================= BUTTONS ================= */
+
+button,
+.btn{
+    display:inline-block;
+    padding:12px 22px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:bold;
+    text-decoration:none;
+    transition:.3s;
+    background:white;
+    color:#5f2dbb;
+}
+
+button:hover,
+.btn:hover{
+    transform:translateY(-2px);
+    background:#ffd369;
+}
+
+.delete-btn{
+    background:#dc3545;
+    color:white;
+}
+
+.delete-btn:hover{
+    background:#b02a37;
+    color:white;
+}
+
+.logout-btn{
+    background:#dc3545;
+    color:white;
+}
+
+.logout-btn:hover{
+    background:#b02a37;
+}
+
+/* ================= TABLE ================= */
+
+.table-wrapper{
+    width:100%;
+    overflow-x:auto;
+    margin:25px 0;
+}
+
+table{
+    width:100%;
+    min-width:850px;
+    border-collapse:collapse;
+    border-radius:12px;
+    overflow:hidden;
+    background:rgba(255,255,255,.18);
+}
+
+th{
+    background:rgba(255,255,255,.35);
+    color:#111;
+    padding:15px;
+    font-size:17px;
+}
+
+td{
+    padding:14px;
+    color:white;
+    text-align:center;
+    word-break:break-word;
+}
+
+tr:nth-child(even){
+    background:rgba(255,255,255,.08);
+}
+
+td a{
+    display:inline-block;
+    padding:8px 16px;
+    background:white;
+    color:#6a11cb;
+    border-radius:8px;
+    text-decoration:none;
+    font-weight:bold;
+}
+
+td a:hover{
+    background:#ffd369;
+}
+
+/* ================= DASHBOARD ================= */
+
+.dashboard-container{
+    width:100%;
+    max-width:1000px;
+}
+
+.welcome{
+    font-size:22px;
+    font-weight:bold;
+    color:white;
+    margin:25px 0;
+}
+
+.stats{
+    display:flex;
+    gap:20px;
+    margin:30px 0;
+}
+
+.card{
+    flex:1;
+    background:rgba(255,255,255,.18);
+    backdrop-filter:blur(10px);
+    border-radius:15px;
+    padding:25px;
+    box-shadow:0 8px 20px rgba(0,0,0,.3);
+}
+
+.card h3{
+    color:white;
+    margin-bottom:15px;
+}
+
+.card h2{
+    color:#ffd369;
+    font-size:38px;
+}
+
+/* ================= FOOTER ================= */
+
+.footer{
+    margin-top:20px;
+    opacity:.85;
+    font-size:14px;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media(max-width:768px){
+
+    .container{
+        padding:20px;
+    }
+
+    h1{
+        font-size:32px;
+    }
+
+    .stats{
+        flex-direction:column;
+    }
+
+    .card{
+        width:100%;
+    }
+
+    table{
+        min-width:800px;
+    }
+}

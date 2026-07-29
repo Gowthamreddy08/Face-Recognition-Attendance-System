@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="container dashboard-container">
+
+    <h1>Face Recognition Attendance System</h1>
+
+    <div class="welcome">
+        Welcome, {{ username }}
+    </div>
+
+    <div class="stats">
+
+        <div class="card">
+            <h3>Total Students</h3>
+            <h2>{{ total_students }}</h2>
+        </div>
+
+        <div class="card">
+            <h3>Today's Attendance</h3>
+            <h2>{{ today_attendance }}</h2>
+        </div>
+
+        <div class="card">
+            <h3>Absent Students</h3>
+            <h2>{{ absent_students }}</h2>
+        </div>
+
+    </div>
+
+    <a href="{{ url_for('register') }}">
+        <button>Register Student</button>
+    </a>
+
+    <a href="{{ url_for('attendance') }}">
+        <button>Start Attendance</button>
+    </a>
+
+    <a href="{{ url_for('view_attendance') }}">
+        <button>View Attendance</button>
+    </a>
+
+    <a href="{{ url_for('manage_students') }}">
+        <button>Manage Students</button>
+    </a>
+
+    <a href="{{ url_for('logout') }}">
+        <button class="logout-btn">Logout</button>
+    </a>
+
+</div>
+
+</body>
+</html>
