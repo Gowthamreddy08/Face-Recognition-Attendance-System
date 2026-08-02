@@ -1,10 +1,11 @@
-/* ================= GLOBAL ================= */
-
+/* ===================================================
+   GLOBAL
+=================================================== */
 *{
     margin:0;
     padding:0;
     box-sizing:border-box;
-    font-family:'Segoe UI',sans-serif;
+    font-family:"Segoe UI",sans-serif;
 }
 
 body{
@@ -12,14 +13,12 @@ body{
     display:flex;
     justify-content:center;
     align-items:center;
+    padding:40px 20px;
     overflow:auto;
     background:linear-gradient(-45deg,#667eea,#764ba2,#6a11cb,#2575fc);
     background-size:400% 400%;
     animation:gradientMove 12s ease infinite;
-    padding:40px 20px;
 }
-
-/* Animated Background */
 
 @keyframes gradientMove{
     0%{background-position:0% 50%;}
@@ -36,114 +35,100 @@ body::after{
     z-index:-1;
 }
 
-body::before{
-    width:220px;
-    height:220px;
-    top:12%;
-    left:15%;
-}
-
-body::after{
-    width:320px;
-    height:320px;
-    bottom:10%;
-    right:10%;
-}
-
-/* ================= CONTAINER ================= */
+body::before{width:220px;height:220px;top:10%;left:10%;}
+body::after{width:320px;height:320px;right:8%;bottom:8%;}
 
 .container{
-    width:95%;
-    max-width:1100px;
-    background:rgba(255,255,255,.15);
-    backdrop-filter:blur(15px);
+    width:90%;
+    max-width:650px;
+    margin:50px auto;
+    background:rgba(255,255,255,0.16);
+    backdrop-filter:blur(18px);
     border-radius:20px;
-    padding:35px;
-    color:white;
-    box-shadow:0 15px 35px rgba(0,0,0,.35);
+    padding:40px;
+    color:#fff;
     text-align:center;
+    box-shadow:0 20px 45px rgba(0,0,0,.30);
 }
 
-/* ================= HEADINGS ================= */
+.dashboard-container{max-width:1100px;}
 
 h1{
-    margin-bottom:25px;
     font-size:44px;
     font-weight:700;
+    margin-bottom:10px;
+    line-height:1.2;
 }
 
 h2{
-    margin-bottom:20px;
+    font-size:30px;
     font-weight:500;
+    margin-bottom:30px;
 }
-
-/* ================= INPUTS ================= */
 
 input[type="text"],
-input[type="password"],
-input[type="email"],
-input[type="file"],
-select{
+input[type="password"]{
+
     width:100%;
-    padding:14px;
+
+    height:54px;
+
+    padding:0 18px;
+
     margin:12px 0;
+
     border:none;
+
     border-radius:10px;
+
     font-size:16px;
+
+    outline:none;
 }
+button{
 
-/* ================= BUTTONS ================= */
+    width:100%;
 
-button,
-.btn{
-    display:inline-block;
-    padding:12px 22px;
+    height:50px;
+
+    margin-top:15px;
+
     border:none;
+
     border-radius:10px;
+
+    background:#ffffff;
+
+    color:#5b2be0;
+
+    font-size:16px;
+
+    font-weight:600;
+
     cursor:pointer;
-    font-weight:bold;
-    text-decoration:none;
+
     transition:.3s;
-    background:white;
-    color:#5f2dbb;
 }
 
-button:hover,
-.btn:hover{
+button:hover{
+
+    background:#ffd54f;
+
     transform:translateY(-2px);
-    background:#ffd369;
-}
 
-.delete-btn{
-    background:#dc3545;
-    color:white;
 }
-
-.delete-btn:hover{
-    background:#b02a37;
-    color:white;
-}
-
-.logout-btn{
-    background:#dc3545;
-    color:white;
-}
-
-.logout-btn:hover{
-    background:#b02a37;
-}
-
-/* ================= TABLE ================= */
+.logout-btn,.delete-btn{background:#dc3545;color:#fff;}
+.logout-btn:hover,.delete-btn:hover{background:#b02a37;}
 
 .table-wrapper{
     width:100%;
     overflow-x:auto;
-    margin:25px 0;
+    margin-top:25px;
 }
 
 table{
     width:100%;
-    min-width:850px;
+    min-width:1000px;
     border-collapse:collapse;
     border-radius:12px;
     overflow:hidden;
@@ -152,16 +137,14 @@ table{
 
 th{
     background:rgba(255,255,255,.35);
-    color:#111;
-    padding:15px;
-    font-size:17px;
+    color:#222;
+    padding:16px;
 }
 
 td{
-    padding:14px;
-    color:white;
+    padding:16px;
     text-align:center;
-    word-break:break-word;
+    color:#fff;
 }
 
 tr:nth-child(even){
@@ -169,87 +152,109 @@ tr:nth-child(even){
 }
 
 td a{
-    display:inline-block;
-    padding:8px 16px;
-    background:white;
-    color:#6a11cb;
-    border-radius:8px;
     text-decoration:none;
-    font-weight:bold;
-}
-
-td a:hover{
-    background:#ffd369;
-}
-
-/* ================= DASHBOARD ================= */
-
-.dashboard-container{
-    width:100%;
-    max-width:1000px;
-}
-
-.welcome{
-    font-size:22px;
-    font-weight:bold;
-    color:white;
-    margin:25px 0;
 }
 
 .stats{
     display:flex;
     gap:20px;
+    flex-wrap:wrap;
     margin:30px 0;
 }
 
 .card{
     flex:1;
-    background:rgba(255,255,255,.18);
-    backdrop-filter:blur(10px);
-    border-radius:15px;
+    min-width:220px;
     padding:25px;
-    box-shadow:0 8px 20px rgba(0,0,0,.3);
-}
-
-.card h3{
-    color:white;
-    margin-bottom:15px;
+    border-radius:16px;
+    background:rgba(255,255,255,.18);
 }
 
 .card h2{
     color:#ffd369;
-    font-size:38px;
+    font-size:36px;
 }
-
-/* ================= FOOTER ================= */
 
 .footer{
+
     margin-top:20px;
-    opacity:.85;
+
     font-size:14px;
+
+    opacity:.9;
+
 }
 
-/* ================= RESPONSIVE ================= */
-
 @media(max-width:768px){
-
     .container{
-        padding:20px;
+        width:95%;
+        padding:22px;
     }
+    h1{font-size:34px;}
+    h2{font-size:24px;}
+    .stats{flex-direction:column;}
+    table{min-width:800px;}
+}
+.large-container{
+    width:95%;
+    max-width:1300px;
+}
+/* Fix Edit Student Form */
 
-    h1{
-        font-size:32px;
-    }
+form{
+    width:100%;
+}
 
-    .stats{
-        flex-direction:column;
-    }
+label{
 
-    .card{
-        width:100%;
-    }
+    display:block;
 
-    table{
-        min-width:800px;
-    }
+    width:100%;
+
+    text-align:left;
+
+    margin-top:12px;
+
+    margin-bottom:8px;
+
+    color:#ffffff;
+
+    font-weight:600;
+
+    font-size:17px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="file"],
+select{
+
+    display:block;
+
+    width:100%;
+
+    height:54px;
+
+    padding:0 18px;
+
+    margin:12px 0 18px 0;
+
+    border:none;
+
+    border-radius:10px;
+
+    outline:none;
+
+    font-size:16px;
+
+    background:#ffffff;
+
+    color:#333;
+}
+
+button{
+    display:block;
+    width:100%;
 }

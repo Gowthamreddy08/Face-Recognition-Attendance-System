@@ -82,8 +82,29 @@ def login_required(func):
         return func(*args, **kwargs)
     return wrapper
 
+
+# ---------------- HOME ----------------
+
+@app.route("/")
+def home():
+
+    conn = sqlite3.connect("database.db")
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT COUNT(*) FROM admin")
+    count = cursor.fetchone()[0]
+
+    conn.close()
+
+    if count == 0:
+        return redirect(url_for("signup"))
+
+    return redirect(url_for("login"))
+
+
 # ---------------- SIGNUP ----------------
-@app.route('/signup', methods=['GET', 'POST'])
+
+@app.route("/signup", methods=["GET", "POST"])
 def signup():
 
     conn = sqlite3.connect("database.db")
@@ -94,17 +115,18 @@ def signup():
         username = request.form["username"].strip()
         password = request.form["password"]
 
-        # Check if username already exists
         cursor.execute(
             "SELECT id FROM admin WHERE username=?",
             (username,)
         )
 
         if cursor.fetchone():
+
             conn.close()
+
             return render_template(
                 "signup.html",
-                error="Username already exists. Please choose another username."
+                error="Username already exists."
             )
 
         password = generate_password_hash(password)
@@ -120,48 +142,57 @@ def signup():
         return redirect(url_for("login"))
 
     conn.close()
+
     return render_template("signup.html")
+
+
 # ---------------- LOGIN ----------------
-@app.route('/')
-def home():
-    conn = sqlite3.connect("database.db")
-    cursor = conn.cursor()
 
-    cursor.execute("SELECT COUNT(*) FROM admin")
-    count = cursor.fetchone()[0]
-
-    conn.close()
-
-    if count == 0:
-        return redirect(url_for("signup"))
-
-    return redirect(url_for("login"))
-
-@app.route('/login', methods=['GET','POST'])
+@app.route("/login", methods=["GET", "POST"])
 def login():
-    error=None
-    if request.method=="POST":
-        username=request.form["username"]
-        password=request.form["password"]
-        conn=sqlite3.connect("database.db")
-        cursor=conn.cursor()
-        cursor.execute("SELECT id,password FROM admin WHERE username=?",(username,))
-        row=cursor.fetchone()
+
+    error = None
+
+    if request.method == "POST":
+
+        username = request.form["username"]
+        password = request.form["password"]
+
+        conn = sqlite3.connect("database.db")
+        cursor = conn.cursor()
+
+        cursor.execute(
+            "SELECT id,password FROM admin WHERE username=?",
+            (username,)
+        )
+
+        row = cursor.fetchone()
+
         conn.close()
-        if row and check_password_hash(row[1],password):
-            session["admin_id"]=row[0]
-            session["username"]=username
+
+        if row and check_password_hash(row[1], password):
+
+            session["admin_id"] = row[0]
+            session["username"] = username
+
             return redirect(url_for("dashboard"))
-        error="Invalid Username or Password"
-    return render_template("login.html",error=error)
+
+        error = "Invalid Username or Password"
+
+    return render_template("login.html", error=error)
+
 
 @app.route("/logout")
 def logout():
+
     session.clear()
+
     return redirect(url_for("login"))
 
+
 # ---------------- DASHBOARD ----------------
-@app.route('/dashboard')
+
+@app.route("/dashboard")
 @login_required
 def dashboard():
 
@@ -170,24 +201,26 @@ def dashboard():
     conn = sqlite3.connect("database.db")
     cursor = conn.cursor()
 
-    # Total Students
     cursor.execute(
         "SELECT COUNT(*) FROM students WHERE admin_id=?",
         (admin_id,)
     )
+
     total_students = cursor.fetchone()[0]
 
-    # Today's Attendance
     today = datetime.now().strftime("%d-%m-%Y")
 
     cursor.execute(
-        "SELECT COUNT(DISTINCT roll_no) FROM attendance WHERE admin_id=? AND date=?",
+        """
+        SELECT COUNT(DISTINCT roll_no)
+        FROM attendance
+        WHERE admin_id=? AND date=?
+        """,
         (admin_id, today)
     )
+
     today_attendance = cursor.fetchone()[0]
 
-    # Total Attendance Records
-    # Absent Students Today
     absent_students = total_students - today_attendance
 
     conn.close()
@@ -199,32 +232,37 @@ def dashboard():
         absent_students=absent_students,
         username=session["username"]
     )
+
+
 # ---------------- REGISTER ----------------
-@app.route('/register', methods=['GET', 'POST'])
+
+@app.route("/register", methods=["GET", "POST"])
 @login_required
 def register():
 
     if request.method == "POST":
 
-        name = request.form['name']
-        roll_no = request.form['roll_no']
-        email = request.form['email']
-        branch = request.form['branch']
-        year = request.form['year']
-        image = request.files['image']
+        name = request.form["name"]
+        roll_no = request.form["roll_no"]
+        email = request.form["email"]
+        branch = request.form["branch"]
+        year = request.form["year"]
 
-        admin_id = session['admin_id']
-        username = session['username']
+        image = request.files["image"]
+
+        admin_id = session["admin_id"]
+        username = session["username"]
 
         conn = sqlite3.connect("database.db")
         cursor = conn.cursor()
 
         try:
+
             cursor.execute(
                 """
                 INSERT INTO students
-                (admin_id, name, roll_no, email, branch, year)
-                VALUES (?, ?, ?, ?, ?, ?)
+                (admin_id,name,roll_no,email,branch,year)
+                VALUES(?,?,?,?,?,?)
                 """,
                 (
                     admin_id,
@@ -241,14 +279,21 @@ def register():
         except sqlite3.IntegrityError:
 
             conn.close()
-            return "Roll number already exists!"
+
+            return "Roll Number already exists."
 
         conn.close()
 
-        os.makedirs(f"dataset/{username}/{roll_no}", exist_ok=True)
-        image.save(f"dataset/{username}/{roll_no}/{image.filename}")
+        os.makedirs(
+            f"dataset/{username}/{roll_no}",
+            exist_ok=True
+        )
 
-        return redirect(url_for('dashboard'))
+        image.save(
+            f"dataset/{username}/{roll_no}/{image.filename}"
+        )
+
+        return redirect(url_for("dashboard"))
 
     return render_template("register.html")
 # ---------------- MANAGE STUDENTS ----------------
