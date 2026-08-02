@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: face-attendance-system
+    env: docker
+    plan: free
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DATABASE_URL
+        fromDatabase:
+          name: face-attendance-db
+          property: connectionString
+      - key: DB_SSLMODE
+        value: require
+      - key: ENABLE_WEBCAM
+        value: "false"
+      - key: EMAIL_ADDRESS
+        sync: false
+      - key: EMAIL_PASSWORD
+        sync: false
+
+databases:
+  - name: face-attendance-db
+    plan: free

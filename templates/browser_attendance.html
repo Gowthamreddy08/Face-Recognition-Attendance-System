@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Browser Face Recognition</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+        video{
+            width:700px;
+            max-width:100%;
+            border-radius:15px;
+            border:4px solid white;
+            margin-top:20px;
+        }
+
+        canvas{
+            display:none;
+        }
+
+        #status{
+            margin-top:20px;
+            font-size:20px;
+            font-weight:bold;
+            color:#fff;
+        }
+
+        .camera-buttons{
+            display:flex;
+            gap:20px;
+            justify-content:center;
+            margin-top:20px;
+            flex-wrap:wrap;
+        }
+
+        button{
+            width:220px;
+        }
+    </style>
+
+</head>
+
+<body>
+
+<div class="container large-container">
+
+<h1>Browser Face Recognition Attendance</h1>
+
+<p>
+Allow camera access and click Start Attendance.
+</p>
+
+<video id="video" autoplay playsinline></video>
+
+<canvas id="canvas"></canvas>
+
+<div class="camera-buttons">
+
+<button id="startCamera">Start Camera</button>
+<button id="startAttendance">Start Attendance</button>
+<button id="stopCamera">Stop Camera</button>
+
+</div>
+
+<div id="status">
+
+Waiting...
+
+</div>
+
+<br>
+
+<a href="/dashboard">
+<button>
+Back to Dashboard
+</button>
+</a>
+
+</div>
+
+<script>
+
+const video = document.getElementById("video");
+const canvas = document.getElementById("canvas");
+const status = document.getElementById("status");
+
+let stream = null;
+
+// Start Camera
+document.getElementById("startCamera").onclick = async () => {
+
+    try {
+
+        stream = await navigator.mediaDevices.getUserMedia({
+            video: true
+        });
+
+        video.srcObject = stream;
+
+        status.innerHTML = "Camera Started";
+
+    } catch (err) {
+
+        status.innerHTML = "Camera Permission Denied";
+    }
+
+};
+
+
+let attendanceInterval = null;
+document.getElementById("stopCamera").onclick = () => {
+
+    if (attendanceInterval) {
+        clearInterval(attendanceInterval);
+    }
+
+    if (stream) {
+        stream.getTracks().forEach(track => track.stop());
+        video.srcObject = null;
+    }
+
+    status.innerHTML = "Camera Stopped";
+};
+
+document.getElementById("startAttendance").onclick = () => {
+
+    if (!stream) {
+        status.innerHTML = "Please start the camera first.";
+        return;
+    }
+
+    status.innerHTML = "Scanning...";
+
+    attendanceInterval = setInterval(async () => {
+
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(video, 0, 0);
+
+        const image = canvas.toDataURL("image/jpeg");
+
+        try {
+
+            const response = await fetch("/recognize", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    image: image
+                })
+            });
+
+            const data = await response.json();
+
+            status.innerHTML = data.message;
+
+            if (data.success) {
+
+                clearInterval(attendanceInterval);
+
+                stream.getTracks().forEach(track => track.stop());
+
+                video.srcObject = null;
+            }
+
+        } catch (err) {
+
+            console.error(err);
+            alert(err);  
+
+
+            status.innerHTML = "Connection Error";
+        }
+
+    }, 1000);
+
+};
+
+</script>
+
+</body>
+
+</html>
