@@ -1,6 +1,5 @@
 FROM python:3.11-slim
 
-# System packages needed to build dlib (face_recognition's dependency)
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     cmake \
@@ -14,12 +13,12 @@ WORKDIR /app
 
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
+# Installs face-recognition using pre-compiled dlib-bin without compiling C++ dlib
+RUN pip install --no-cache-dir face-recognition==1.3.0 --no-deps
 
 COPY . .
 
-# Cloud platforms set PORT for you; default to 5000 for local docker run
 ENV PORT=5000
 EXPOSE 5000
 
-# gunicorn instead of Flask's dev server for production
 CMD ["sh", "-c", "gunicorn --bind 0.0.0.0:$PORT app:app"]
